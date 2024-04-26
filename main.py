@@ -9,7 +9,7 @@ DB = {
             'password': 'admin',
             'type': 'admin'
         },
-           {
+        {
             'name': 'Cliente',
             'email': 'client@client.com',
             'password': 'client',
@@ -57,23 +57,23 @@ user_logged = None
 while True:
     print("\nMenu Principal")
 
-    for item in MAIN_MENU:
-        if (item['need_auth'] == True and user_logged == None):
+    for option in MAIN_MENU:
+        if (option['need_auth'] == True and user_logged == None):
             continue
-        print(item['title'])
+        print(option['title'])
 
-    key_pressed = input("\nEscolha uma opção: ")
-    active_option = None
+    main_menu_key = input("\nEscolha uma opção: ")
+    main_menu_option = None
 
     for option in MAIN_MENU:
-        if option['key'] == key_pressed:
-            active_option = option
+        if option['key'] == main_menu_key:
+            main_menu_option = option
 
-    if (active_option == None):
+    if main_menu_option == None:
         print("Opção inválida.")
         continue
 
-    if (len(active_option['roles'])):
+    if option['need_auth'] == True or len(main_menu_option['roles']):
         if (user_logged == None):
             print('\nPara acessar essa funcionalidade, por favor o faça login!')
 
@@ -99,11 +99,11 @@ while True:
                 else:
                     print('Usuário ou senha inválidos!')
 
-        if user_logged['type'] not in active_option['roles']:
+        if user_logged['type'] not in main_menu_option['roles']:
             print("Usuário não autorizado.")
             continue
 
-    if key_pressed == "1":
+    if main_menu_key == "1":
         print("\nMenu de Gerenciamento de Filmes")
         print("R5 - Realizar o cadastro do filme")
         print("R6 - Buscar filme")
@@ -112,21 +112,33 @@ while True:
         print("R9 - Tema Livre")
         print("R10 - Tema Livre")
 
-    if key_pressed == "2":
+    if main_menu_key == "2":
         print("\nMenu de Compra de Ingressos")
         print("R11 - Efetuar a compra do ingresso de um filme")
         print("R12 - Tema livre")
         continue
 
-    if key_pressed == "3":
+    if main_menu_key == "3":
         name = input("\nDigite o nome: ")
 
-        email = input("Digite o email: ")
         while True:
-            if '@' in email and '.' in email.split('@')[-1]:
-                break
-            print('Email inválido!')
             email = input("Digite o email: ")
+
+            if '@' not in email or '.' not in email.split('@')[-1]:
+                print('Email inválido!')
+                continue
+
+            email_in_use = False
+            for user in DB['users']:
+                if user['email'] == email:
+                    email_in_use = True
+                    break
+
+            if email_in_use:
+                    print('Email já cadastrado!')
+                    continue
+
+            break
 
         password = input("Digite a senha: ")
 
@@ -146,13 +158,13 @@ while True:
         print("Usuário cadastrado com sucesso!")
         continue
 
-    if key_pressed == "9":
+    if main_menu_key == "9":
         name = user_logged['name']
         print(f'Até mais, {name}!')
         user_logged = None
         continue
 
-    if key_pressed == "0":
-        name = user_logged['name'] if user_logged != None else 'usuário anônimo'
+    if main_menu_key == "0":
+        name = 'usuário anônimo' if user_logged == None else user_logged['name']
         print(f'Até mais, {name}!')
         exit()
