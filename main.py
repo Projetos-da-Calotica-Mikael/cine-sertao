@@ -1,3 +1,5 @@
+from getpass import getpass
+
 DB = {
     'user_types': ['admin', 'client'],
     'users': [
@@ -84,7 +86,7 @@ while True:
                         break
                     print('Email inválido!')
 
-                password = input("Digite a senha: ")
+                password = getpass("Digite a senha: ")
 
                 for user in DB['users']:
                     if user['email'] == email and user['password'] == password:
@@ -129,7 +131,7 @@ while True:
             else:
                 break
 
-        password = input("Digite a senha: ")
+        password = getpass("Digite a senha: ")
 
         user_type = 'client'
 
