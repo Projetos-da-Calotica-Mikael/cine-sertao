@@ -78,12 +78,11 @@ while True:
             print('\nPara acessar essa funcionalidade, por favor o faça login!')
 
             while True:
-                email = input("\nDigite o email: ")
                 while True:
+                    email = input("Digite o email: ")
                     if '@' in email and '.' in email.split('@')[-1]:
                         break
                     print('Email inválido!')
-                    email = input("Digite o email: ")
 
                 password = input("Digite a senha: ")
 
@@ -142,12 +141,11 @@ while True:
 
         password = input("Digite a senha: ")
 
-        user_type = input("Digite o tipo (admin ou client): ")
         while True:
+            user_type = input("Digite o tipo (admin ou client): ")
             if user_type in DB['user_types']:
                 break
             print('Tipo inválido!')
-            user_type = input("Digite o tipo (admin ou client): ")
 
         DB['users'].append({
             'name': name,
