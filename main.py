@@ -1,6 +1,7 @@
 print('=' * 10, 'BEM VINDO AO CINE SERTÃO', '=' * 10)
 
-db = {
+DB = {
+    'user_types': ['admin', 'client'],
     'users': [
         {
             'name': 'Admin',
@@ -18,7 +19,7 @@ db = {
     'films': [],
 }
 
-main_menu = [
+MAIN_MENU = [
     {
         'title': 'R1 - Gerenciar os filmes (ADM)',
         'key': '1',
@@ -56,7 +57,7 @@ user_logged = None
 while True:
     print("\nMenu Principal")
 
-    for item in main_menu:
+    for item in MAIN_MENU:
         if (item['need_auth'] == True and user_logged == None):
             continue
         print(item['title'])
@@ -64,7 +65,7 @@ while True:
     key_pressed = input("\nEscolha uma opção: ")
     active_option = None
 
-    for option in main_menu:
+    for option in MAIN_MENU:
         if option['key'] == key_pressed:
             active_option = option
 
@@ -78,9 +79,15 @@ while True:
 
             while True:
                 email = input("\nDigite o email: ")
+                while True:
+                    if '@' in email and '.' in email.split('@')[-1]:
+                        break
+                    print('Email inválido!')
+                    email = input("Digite o email: ")
+
                 password = input("Digite a senha: ")
 
-                for user in db['users']:
+                for user in DB['users']:
                     if user['email'] == email and user['password'] == password:
                         user_logged = user
                         break
@@ -113,11 +120,24 @@ while True:
 
     if key_pressed == "3":
         name = input("\nDigite o nome: ")
+
         email = input("Digite o email: ")
+        while True:
+            if '@' in email and '.' in email.split('@')[-1]:
+                break
+            print('Email inválido!')
+            email = input("Digite o email: ")
+
         password = input("Digite a senha: ")
-        user_type = input("Digite o tipo (ADM ou CLIENTE): ")
-        # TODO: validate user type
-        db['users'].append({
+
+        user_type = input("Digite o tipo (admin ou client): ")
+        while True:
+            if user_type in DB['user_types']:
+                break
+            print('Tipo inválido!')
+            user_type = input("Digite o tipo (admin ou client): ")
+
+        DB['users'].append({
             'name': name,
             'email': email,
             'password': password,
