@@ -1,5 +1,3 @@
-print('=' * 10, 'BEM VINDO AO CINE SERTÃO', '=' * 10)
-
 DB = {
     'user_types': ['admin', 'client'],
     'users': [
@@ -21,31 +19,31 @@ DB = {
 
 MAIN_MENU = [
     {
-        'title': 'R1 - Gerenciar os filmes (ADM)',
+        'title': 'Gerenciar os filmes (ADM)',
         'key': '1',
         'roles': ['admin'],
         'need_auth': False
     },
     {
-        'title': 'R2 - Comprar Ingressos (CLIENTE)',
+        'title': 'Comprar Ingressos (CLIENTE)',
         'key': '2',
         'roles': ['client'],
         'need_auth': False
     },
     {
-        'title': 'R3 - Cadastrar usuário (ADM ou CLIENTE)',
+        'title': 'Cadastrar usuário (ADM ou CLIENTE)',
         'key': '3',
         'roles': [],
         'need_auth': False
     },
     {
-        'title': 'R9 - Deslogar',
+        'title': 'Deslogar',
         'key': '9',
         'roles': [],
         'need_auth': True
     },
     {
-        'title': 'R0 - Sair',
+        'title': 'Sair',
         'key': '0',
         'roles': [],
         'need_auth': False
@@ -55,12 +53,14 @@ MAIN_MENU = [
 user_logged = None
 
 while True:
-    print("\nMenu Principal")
+    print("\033c")
+    print('=' * 10, 'BEM VINDO AO CINE SERTÃO', '=' * 10)
 
+    print("\n* Menu Principal")
     for option in MAIN_MENU:
         if (option['need_auth'] == True and user_logged == None):
             continue
-        print(option['title'])
+        print(f"[{option['key']}] - {option['title']}")
 
     main_menu_key = input("\nEscolha uma opção: ")
     main_menu_option = None
@@ -79,7 +79,7 @@ while True:
 
             while True:
                 while True:
-                    email = input("Digite o email: ")
+                    email = input("\nDigite o email: ")
                     if '@' in email and '.' in email.split('@')[-1]:
                         break
                     print('Email inválido!')
@@ -143,14 +143,17 @@ while True:
             'password': password,
             'type': user_type
         })
-        print("Usuário cadastrado com sucesso!")
+
+        print('Usuário cadastrado com sucesso!')
 
     elif main_menu_key == "9":
-        name = user_logged['name']
-        print(f'Até mais, {name}!')
+        print(f"Até mais, {user_logged['name']}!")
         user_logged = None
 
     elif main_menu_key == "0":
         name = 'usuário anônimo' if user_logged == None else user_logged['name']
         print(f'Até mais, {name}!')
         exit()
+
+    print("\nPressione Enter para continuar...")
+    input()
