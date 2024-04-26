@@ -36,6 +36,12 @@ MAIN_MENU = [
         'roles': [],
         'need_auth': False
     },
+      {
+        'title': 'Login',
+        'key': '8',
+        'roles': [],
+        'need_auth': False
+    },
     {
         'title': 'Deslogar',
         'key': '9',
@@ -53,8 +59,12 @@ MAIN_MENU = [
 user_logged = None
 
 while True:
-    print("\033c")
-    print('=' * 10, 'BEM VINDO AO CINE SERTÃO', '=' * 10)
+    print('\033c')
+
+    if (user_logged):
+        print('=' * 10, f"BEM VINDO {user_logged['name']} AO CINE SERTÃO", '=' * 10)
+    else:
+        print('=' * 10, f'BEM VINDO AO CINE SERTÃO', '=' * 10)
 
     print("\n* Menu Principal")
     for option in MAIN_MENU:
@@ -66,44 +76,30 @@ while True:
     main_menu_option = None
 
     for option in MAIN_MENU:
+        if (option['need_auth'] == True and user_logged == None):
+            continue
         if option['key'] == main_menu_key:
             main_menu_option = option
 
     if main_menu_option == None:
         print("Opção inválida.")
+        input("\nPressione Enter para continuar...")
         continue
 
-    if option['need_auth'] == True or len(main_menu_option['roles']):
-        if (user_logged == None):
-            print('\nPara acessar essa funcionalidade, por favor o faça login!')
+    if ((main_menu_option['need_auth'] == True or len(main_menu_option['roles'])) and user_logged == None):
+        print('Para acessar essa funcionalidade, por favor o faça login!')
+        input("\nPressione Enter para continuar...")
+        continue
 
-            while True:
-                while True:
-                    email = input("\nDigite o email: ")
-                    if '@' in email and '.' in email.split('@')[-1]:
-                        break
-                    print('Email inválido!')
+    if len(main_menu_option['roles']) and user_logged['type'] not in main_menu_option['roles']:
+        print("Usuário não autorizado.")
+        input("\nPressione Enter para continuar...")
+        continue
 
-                password = input("Digite a senha: ")
-
-                for user in DB['users']:
-                    if user['email'] == email and user['password'] == password:
-                        user_logged = user
-                        break
-
-                if user_logged:
-                    name = user_logged['name']
-                    print(f'Bem vindo, {name}!')
-                    break
-                else:
-                    print('Usuário ou senha inválidos!')
-
-        if user_logged['type'] not in main_menu_option['roles']:
-            print("Usuário não autorizado.")
-            continue
+    print('')
 
     if main_menu_key == "1":
-        print("\nMenu de Gerenciamento de Filmes")
+        print("Menu de Gerenciamento de Filmes")
         print("R5 - Realizar o cadastro do filme")
         print("R6 - Buscar filme")
         print("R7 - Atualizar dados do filme")
@@ -112,12 +108,12 @@ while True:
         print("R10 - Tema Livre")
 
     elif main_menu_key == "2":
-        print("\nMenu de Compra de Ingressos")
+        print("Menu de Compra de Ingressos")
         print("R11 - Efetuar a compra do ingresso de um filme")
         print("R12 - Tema livre")
 
     elif main_menu_key == "3":
-        name = input("\nDigite o nome: ")
+        name = input("Digite o nome: ")
 
         while True:
             email = input("Digite o email: ")
@@ -149,6 +145,28 @@ while True:
 
         print('Usuário cadastrado com sucesso!')
 
+    elif main_menu_key == "8":
+        while True:
+            while True:
+                email = input("Digite o email: ")
+                if '@' in email and '.' in email.split('@')[-1]:
+                    break
+                print('Email inválido!')
+
+            password = input("Digite a senha: ")
+
+            for user in DB['users']:
+                if user['email'] == email and user['password'] == password:
+                    user_logged = user
+                    break
+
+            if user_logged:
+                name = user_logged['name']
+                print(f'\nBem vindo, {name}!')
+                break
+            else:
+                print('Usuário ou senha inválidos!')
+
     elif main_menu_key == "9":
         print(f"Até mais, {user_logged['name']}!")
         user_logged = None
@@ -158,5 +176,4 @@ while True:
         print(f'Até mais, {name}!')
         exit()
 
-    print("\nPressione Enter para continuar...")
-    input()
+    input("\nPressione Enter para continuar...")
