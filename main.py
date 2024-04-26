@@ -131,11 +131,14 @@ while True:
 
         password = input("Digite a senha: ")
 
-        while True:
-            user_type = input("Digite o tipo (admin ou client): ")
-            if user_type in DB['user_types']:
-                break
-            print('Tipo inválido!')
+        user_type = 'client'
+
+        if user_logged and user_logged['type'] == 'admin':
+            while True:
+                user_type = input("Digite o tipo (admin ou client): ")
+                if user_type in DB['user_types']:
+                    break
+                print('Tipo inválido!')
 
         DB['users'].append({
             'name': name,
