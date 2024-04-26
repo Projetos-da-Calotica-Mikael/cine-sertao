@@ -111,13 +111,12 @@ while True:
         print("R9 - Tema Livre")
         print("R10 - Tema Livre")
 
-    if main_menu_key == "2":
+    elif main_menu_key == "2":
         print("\nMenu de Compra de Ingressos")
         print("R11 - Efetuar a compra do ingresso de um filme")
         print("R12 - Tema livre")
-        continue
 
-    if main_menu_key == "3":
+    elif main_menu_key == "3":
         name = input("\nDigite o nome: ")
 
         while True:
@@ -125,19 +124,10 @@ while True:
 
             if '@' not in email or '.' not in email.split('@')[-1]:
                 print('Email inválido!')
-                continue
-
-            email_in_use = False
-            for user in DB['users']:
-                if user['email'] == email:
-                    email_in_use = True
-                    break
-
-            if email_in_use:
-                    print('Email já cadastrado!')
-                    continue
-
-            break
+            elif any(user['email'] == email for user in DB['users']):
+                print('Email já cadastrado!')
+            else:
+                break
 
         password = input("Digite a senha: ")
 
@@ -154,15 +144,13 @@ while True:
             'type': user_type
         })
         print("Usuário cadastrado com sucesso!")
-        continue
 
-    if main_menu_key == "9":
+    elif main_menu_key == "9":
         name = user_logged['name']
         print(f'Até mais, {name}!')
         user_logged = None
-        continue
 
-    if main_menu_key == "0":
+    elif main_menu_key == "0":
         name = 'usuário anônimo' if user_logged == None else user_logged['name']
         print(f'Até mais, {name}!')
         exit()
