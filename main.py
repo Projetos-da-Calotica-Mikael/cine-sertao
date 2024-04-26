@@ -112,7 +112,7 @@ while True:
         print("R9 - Tema Livre")
         print("R10 - Tema Livre")
 
-    elif key_pressed == "2":
+    if key_pressed == "2":
         print("\nMenu de Compra de Ingressos")
         print("R11 - Efetuar a compra do ingresso de um filme")
         print("R12 - Tema livre")
