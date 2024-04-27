@@ -40,7 +40,7 @@ DB = {
           {
             'id': '2',
             'film_id': '1',
-            'user_id': '2'
+            'user_id': '1'
         }
     ],
 }
@@ -85,7 +85,7 @@ MAIN_MENU = {
         },
         {
             'title': 'Criar conta',
-            'code': 'register_user',
+            'code': 'store_user',
             'roles': [],
             'need_auth': False,
             'need_no_auth': True
@@ -174,7 +174,7 @@ FILM_MENU = {
         },
         {
             'title': 'Editar filme',
-            'code': 'update_filme',
+            'code': 'update_film',
             'roles': ['admin'],
             'need_auth': True,
             'need_no_auth': False
@@ -260,6 +260,15 @@ while True:
             print(f"Preço: R$ {film['price']:.2f}")
             print('-' * 30)
 
+    elif menu_option['code'] == 'store_film':
+        print("TODO: Cadastrar filme")
+
+    elif menu_option['code'] == 'update_film':
+        print("TODO: Editar filme")
+
+    elif menu_option['code'] == 'destroy_film':
+        print("TODO: Apagar filme")
+
     elif menu_option['code'] == 'index_sale':
         print('-' * 30)
         for sale in DB['sales']:
@@ -291,9 +300,9 @@ while True:
             print(f"Tipo: {user['type']}")
             print('-' * 30)
 
-    elif menu_option['code'] == 'register_user':
+    elif menu_option['code'] == 'store_user':
         new_user = {
-            'id': str(random.random()),
+            'id': str(random.random()).split('.')[1],
             'type': 'client'
         }
         new_user['name'] = input("Digite o nome: ")
@@ -320,6 +329,12 @@ while True:
         DB['users'].append(new_user)
 
         print('Usuário cadastrado com sucesso!')
+
+    elif menu_option['code'] == 'update_user':
+        print("TODO: Editar usuário")
+
+    elif menu_option['code'] == 'destroy_user':
+        print("TODO: Apagar usuário")
 
     elif menu_option['code'] == 'login':
         while True:
