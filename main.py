@@ -203,11 +203,11 @@ while True:
     main_menu_index = input("\nEscolha uma opção: ")
 
     if (not main_menu_index.isdigit()):
-        input("Opção inválida.\nPressione Enter para continuar...")
+        input("Opção inválida.\n\nPressione Enter para continuar...")
         continue
 
     if (int(main_menu_index) < 1 or int(main_menu_index) > len(main_menu_valid_options)):
-        input("Opção inválida.\nPressione Enter para continuar...")
+        input("Opção inválida.\n\nPressione Enter para continuar...")
         continue
 
     main_menu_option = main_menu_valid_options[int(main_menu_index) - 1]
