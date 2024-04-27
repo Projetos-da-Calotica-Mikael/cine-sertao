@@ -252,6 +252,7 @@ while True:
     elif menu_option['code'] == 'index_film':
         print('-' * 30)
         for film in DB['films']:
+            print(f"ID: {film['id']}")
             print(f"Filme: {film['title']}")
             print(f"Descrição: {film['description']}")
             print(f"Duração: {film['duration']} minutos")
@@ -270,7 +271,12 @@ while True:
         print("TODO: Editar filme")
 
     elif menu_option['code'] == 'destroy_film':
-        print("TODO: Apagar filme")
+        film_id = input("Digite o ID do filme: ")
+        if any(film['id'] == film_id for film in DB['films']):
+            DB['films'] = [film for film in DB['films'] if film['id'] != film_id]
+            print('Filme apagado com sucesso!')
+        else:
+            print('Filme não encontrado!')
 
     elif menu_option['code'] == 'index_sale':
         print('-' * 30)
@@ -278,20 +284,26 @@ while True:
             film = next((film for film in DB['films'] if film['id'] == sale['film_id']), None)
             if (user_logged['type'] == 'admin'):
                 user = next((user for user in DB['users'] if user['id'] == sale['user_id']), None)
-                print(f"Venda: {sale['id']}")
-                print(f"Usuário: {user['name']}")
+                print(f"Venda ID: {sale['id']}")
+                if user:
+                    print(f"Usuário: {user['name']}")
+                else:
+                    print("Usuário não encontrado")
             else:
                 if user_logged['id'] != sale['user_id']:
                     continue
-            print(f"Filme: {film['title']}")
-            print(f"Descrição: {film['description']}")
-            print(f"Duração: {film['duration']} minutos")
-            print(f"Gênero: {', '.join(film['genre'])}")
-            print(f"Sala: {film['room_number']}")
-            print(f"Horário: {film['time']}")
-            total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
-            print(f"Assentos vendidos: {total_sales} de {film['capacity']}")
-            print(f"Preço: R$ {film['price']:.2f}")
+            if film:
+                print(f"Filme: {film['title']}")
+                print(f"Descrição: {film['description']}")
+                print(f"Duração: {film['duration']} minutos")
+                print(f"Gênero: {', '.join(film['genre'])}")
+                print(f"Sala: {film['room_number']}")
+                print(f"Horário: {film['time']}")
+                total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
+                print(f"Assentos vendidos: {total_sales} de {film['capacity']}")
+                print(f"Preço: R$ {film['price']:.2f}")
+            else:
+                print("Filme não encontrado")
             print('-' * 30)
 
     elif menu_option['code'] == 'index_user':
@@ -342,7 +354,7 @@ while True:
             DB['users'] = [user for user in DB['users'] if user['id'] != user_id]
             print('Usuário apagado com sucesso!')
         else:
-            print('ID inválido!')
+            print('Usuário não encontrado!')
 
     elif menu_option['code'] == 'login':
         while True:
