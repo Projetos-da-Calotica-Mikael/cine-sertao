@@ -35,7 +35,7 @@ MAIN_MENU = [
     {
         'title': 'Cadastrar usuário',
         'code': 'register_user',
-        'roles': ['admin', 'client'],
+        'roles': [],
         'need_auth': False,
         'need_no_auth': False
     },
@@ -70,7 +70,7 @@ while True:
     print('=' * 10, f'BEM VINDO AO CINE SERTÃO', '=' * 10)
 
     if (user_logged):
-        print(f"\nOlá {user_logged['name']}!")
+        print(f"\nOlá, {user_logged['name']}!")
 
     print("\n* Menu Principal")
 
