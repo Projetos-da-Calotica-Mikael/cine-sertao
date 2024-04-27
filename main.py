@@ -1,43 +1,80 @@
+import random
+
 DB = {
     'user_types': ['admin', 'client'],
     'users': [
         {
+            'id': '1',
             'name': 'Admin',
             'email': 'admin@admin.com',
             'password': 'admin',
             'type': 'admin'
         },
         {
+            'id': '2',
             'name': 'Cliente',
             'email': 'client@client.com',
             'password': 'client',
             'type': 'client'
         }
     ],
-    'films': [],
+    'films': [
+        {
+            'id': '1',
+            'title': 'Filme 1',
+            'description': 'Descrição do filme 1',
+            'duration': '120', # in minutes
+            'genre': ['Ação', 'Aventura'],
+            'room_number': '1',
+            'time': 'manhã', # 'manhã', 'tarde', 'noite'
+            'capacity': 100,
+            'price': 20.00,
+        }
+    ],
+    'sales': [
+        {
+            'id': '1',
+            'film_id': '1',
+            'user_id': '1'
+        }
+    ],
 }
 
 MAIN_MENU = [
     {
-        'title': 'Gerenciar os filmes',
-        'code': 'manage_films',
+        'title': 'Gerenciar usuários',
+        'code': 'users_menu',
+        'roles': ['admin'],
+        'need_auth': True,
+        'need_no_auth': False
+    },
+    {
+        'title': 'Gerenciar filmes',
+        'code': 'films_menu',
         'roles': ['admin'],
         'need_auth': True,
         'need_no_auth': False
     },
     {
         'title': 'Comprar Ingressos',
-        'code': 'buy_tickets',
+        'code': 'store_sale',
         'roles': ['client'],
         'need_auth': True,
         'need_no_auth': False
     },
     {
-        'title': 'Cadastrar usuário',
+        'title': 'Listar ingressos',
+        'code': 'index_sales',
+        'roles': ['client', 'admin'],
+        'need_auth': True,
+        'need_no_auth': False
+    },
+    {
+        'title': 'Criar conta',
         'code': 'register_user',
         'roles': [],
         'need_auth': False,
-        'need_no_auth': False
+        'need_no_auth': True
     },
     {
         'title': 'Login',
@@ -62,12 +99,86 @@ MAIN_MENU = [
     }
 ]
 
+USER_MENU = [
+    {
+        'title': 'Listar usuários',
+        'code': 'index_user',
+        'roles': ['admin'],
+        'need_auth': True,
+        'need_no_auth': False
+    },
+    {
+        'title': 'Cadastrar usuário',
+        'code': 'store_user',
+        'roles': ['admin'],
+        'need_auth': True,
+        'need_no_auth': False
+    },
+    {
+        'title': 'Editar usuário',
+        'code': 'update_user',
+        'roles': ['admin'],
+        'need_auth': True,
+        'need_no_auth': False
+    },
+    {
+        'title': 'Apagar usuário',
+        'code': 'destroy_user',
+        'roles': ['admin'],
+        'need_auth': True,
+        'need_no_auth': False
+    },
+    {
+        'title': 'Voltar',
+        'code': 'back',
+        'roles': [],
+        'need_auth': False,
+        'need_no_auth': False
+    }
+]
+
+FILM_MENU = [
+    {
+        'title': 'Listar filmes',
+        'code': 'index_film',
+        'roles': ['admin'],
+        'need_auth': True,
+        'need_no_auth': False
+    },
+    {
+        'title': 'Cadastrar filme',
+        'code': 'store_film',
+        'roles': ['admin'],
+        'need_auth': True,
+        'need_no_auth': False
+    },
+    {
+        'title': 'Editar filme',
+        'code': 'update_filme',
+        'roles': ['admin'],
+        'need_auth': True,
+        'need_no_auth': False
+    },
+    {
+        'title': 'Apagar filme',
+        'code': 'destroy_film',
+        'roles': ['admin'],
+        'need_auth': True,
+        'need_no_auth': False
+    },
+    {
+        'title': 'Voltar',
+        'code': 'back',
+        'roles': [],
+        'need_auth': False,
+        'need_no_auth': False
+    }
+]
+
 user_logged = None
 
 while True:
-    print('\033c')
-
-    print('=' * 10, f'BEM VINDO AO CINE SERTÃO', '=' * 10)
+    print('\033c========== BEM VINDO AO CINE SERTÃO ==========')
 
     if (user_logged):
         print(f"\nOlá, {user_logged['name']}!")
@@ -92,32 +203,30 @@ while True:
     main_menu_index = input("\nEscolha uma opção: ")
 
     if (not main_menu_index.isdigit()):
-        print("Opção inválida.")
-        input("\nPressione Enter para continuar...")
+        input("Opção inválida.\nPressione Enter para continuar...")
         continue
 
     if (int(main_menu_index) < 1 or int(main_menu_index) > len(main_menu_valid_options)):
-        print("Opção inválida.")
-        input("\nPressione Enter para continuar...")
+        input("Opção inválida.\nPressione Enter para continuar...")
         continue
 
     main_menu_option = main_menu_valid_options[int(main_menu_index) - 1]
 
     print('')
 
-    if main_menu_option['code'] == 'manage_films':
-        print("Menu de Gerenciamento de Filmes")
-        print("R5 - Realizar o cadastro do filme")
-        print("R6 - Buscar filme")
-        print("R7 - Atualizar dados do filme")
-        print("R8 - Remover filme")
-        print("R9 - Tema Livre")
-        print("R10 - Tema Livre")
+    if main_menu_option['code'] == 'films_menu':
+        print("* Menu de Gerenciamento de Filmes")
+        print(FILM_MENU)
 
-    elif main_menu_option['code'] == 'buy_tickets':
-        print("Menu de Compra de Ingressos")
-        print("R11 - Efetuar a compra do ingresso de um filme")
-        print("R12 - Tema livre")
+    if main_menu_option['code'] == 'users_menu':
+        print("* Menu de Gerenciamento de Usuários")
+        print(USER_MENU)
+
+    elif main_menu_option['code'] == 'store_sale':
+        print("TODO: Listar filmes e permitir a compra de ingressos")
+
+    elif main_menu_option['code'] == 'index_sales':
+        print("TODO: Listar vendas de ingressos, se admin mostra todos, se nao apenas do usuario logado")
 
     elif main_menu_option['code'] == 'register_user':
         name = input("Digite o nome: ")
@@ -144,6 +253,7 @@ while True:
                 print('Tipo inválido!')
 
         DB['users'].append({
+            'id': str(random.random()),
             'name': name,
             'email': email,
             'password': password,
