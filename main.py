@@ -38,12 +38,12 @@ DB = {
         {
             'id': '1',
             'film_id': '1',
-            'user_id': '1'
+            'user_id': '2'
         },
         {
             'id': '2',
             'film_id': '1',
-            'user_id': '1'
+            'user_id': '2'
         }
     ],
 }
@@ -87,15 +87,15 @@ MAIN_MENU = {
             'need_no_auth': False
         },
         {
-            'title': 'Criar conta',
-            'code': 'store_user',
+            'title': 'Login',
+            'code': 'login',
             'roles': [],
             'need_auth': False,
             'need_no_auth': True
         },
         {
-            'title': 'Login',
-            'code': 'login',
+            'title': 'Criar conta',
+            'code': 'store_user',
             'roles': [],
             'need_auth': False,
             'need_no_auth': True
@@ -265,7 +265,51 @@ while True:
             print('-' * 30)
 
     elif menu_option['code'] == 'store_film':
-        print("TODO: Cadastrar filme")
+        new_film = {
+            'id': str(random.random()).split('.')[1]
+        }
+        new_film['title'] = input("Digite o título: ")
+        new_film['description'] = input("Digite a descrição: ")
+
+        while True:
+            new_film['duration'] = input("Digite a duração (em minutos): ")
+            if new_film['duration'].isdigit():
+                new_film['duration'] = int(new_film['duration'])
+                break
+            print('Duração inválida!')
+
+        new_film['genre'] = input("Digite o gênero (separado por vírgula): ").split(',')
+
+        while True:
+            new_film['room_number'] = input("Digite o número da sala: ")
+            if new_film['room_number'].isdigit():
+                new_film['room_number'] = int(new_film['room_number'])
+                break
+            print('Número inválido!')
+
+        while True:
+            new_film['time'] = input("Digite o horário (manhã, tarde ou noite): ")
+            if new_film['time'] in ['manhã', 'tarde', 'noite']:
+                break
+            print('Horário inválido!')
+
+        while True:
+            new_film['capacity'] = input("Digite a capacidade da sala: ")
+            if new_film['capacity'].isdigit():
+                new_film['capacity'] = int(new_film['capacity'])
+                break
+            print('Capacidade inválida!')
+
+        while True:
+            new_film['price'] = input("Digite o preço: ")
+            if new_film['price'].replace('.', '', 1).isdigit():
+                new_film['price'] = float(new_film['price'])
+                break
+            print('Preço inválido!')
+
+        DB['films'].append(new_film)
+
+        print('Filme cadastrado com sucesso!')
 
     elif menu_option['code'] == 'update_film':
         print("TODO: Editar filme")
