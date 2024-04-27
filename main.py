@@ -246,6 +246,20 @@ while True:
     elif menu_option['code'] == 'store_sale':
         print("TODO: Listar filmes e permitir a compra de ingressos")
 
+    elif menu_option['code'] == 'index_film':
+        print('-' * 30)
+        for film in DB['films']:
+            print(f"Filme: {film['title']}")
+            print(f"Descrição: {film['description']}")
+            print(f"Duração: {film['duration']} minutos")
+            print(f"Gênero: {', '.join(film['genre'])}")
+            print(f"Sala: {film['room_number']}")
+            print(f"Horário: {film['time']}")
+            total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
+            print(f"Assentos vendidos: {total_sales} de {film['capacity']}")
+            print(f"Preço: R$ {film['price']:.2f}")
+            print('-' * 30)
+
     elif menu_option['code'] == 'index_sale':
         print('-' * 30)
         for sale in DB['sales']:
