@@ -71,14 +71,14 @@ MAIN_MENU = {
         },
         {
             'title': 'Listar ingressos comprados',
-            'code': 'index_sales',
+            'code': 'index_sale',
             'roles': ['client'],
             'need_auth': True,
             'need_no_auth': False
         },
         {
             'title': 'Listar ingressos vendidos',
-            'code': 'index_sales',
+            'code': 'index_sale',
             'roles': ['admin'],
             'need_auth': True,
             'need_no_auth': False
@@ -202,7 +202,8 @@ active_menu = MAIN_MENU
 user_logged = DB['users'][0]
 
 while True:
-    print('\033c========== BEM VINDO AO CINE SERTÃO ==========')
+    print('\033c')
+    print('=' * 15, 'BEM VINDO AO CINE SERTÃO', '=' * 15)
 
     if (user_logged):
         print(f"\nOlá, {user_logged['name']}!")
@@ -245,8 +246,8 @@ while True:
     elif menu_option['code'] == 'store_sale':
         print("TODO: Listar filmes e permitir a compra de ingressos")
 
-    elif menu_option['code'] == 'index_sales':
-        print('-' * 20)
+    elif menu_option['code'] == 'index_sale':
+        print('-' * 30)
         for sale in DB['sales']:
             film = next((film for film in DB['films'] if film['id'] == sale['film_id']), None)
             if (user_logged['type'] == 'admin'):
@@ -265,7 +266,16 @@ while True:
             total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
             print(f"Assentos vendidos: {total_sales} de {film['capacity']}")
             print(f"Preço: R$ {film['price']:.2f}")
-            print('-' * 20)
+            print('-' * 30)
+
+    elif menu_option['code'] == 'index_user':
+        print('-' * 30)
+        for user in DB['users']:
+            print(f"ID: {user['id']}")
+            print(f"Nome: {user['name']}")
+            print(f"Email: {user['email']}")
+            print(f"Tipo: {user['type']}")
+            print('-' * 30)
 
     elif menu_option['code'] == 'register_user':
         new_user = {
