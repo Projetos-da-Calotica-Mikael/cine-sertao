@@ -247,7 +247,39 @@ while True:
         continue
 
     elif menu_option['code'] == 'store_sale':
-        print("TODO: Listar filmes e permitir a compra de ingressos")
+        print('-' * 30)
+        filmes_disponiveis = False
+        for film in DB['films']:
+            total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
+            available_seats = film['capacity'] - total_sales
+            if available_seats > 0:
+                filmes_disponiveis = True
+                print(f"ID: {film['id']}")
+                print(f"Filme: {film['title']}")
+                print(f"Descrição: {film['description']}")
+                print(f"Duração: {film['duration']} minutos")
+                print(f"Gênero: {', '.join(film['genre'])}")
+                print(f"Sala: {film['room_number']}")
+                print(f"Horário: {film['time']}")
+                print(f"Assentos disponíveis: {available_seats} de {film['capacity']}")
+                print(f"Preço: R$ {film['price']:.2f}")
+                print('-' * 30)
+        if filmes_disponiveis:
+            film_id = input("Digite o ID do filme que deseja comprar: ")
+            film = next((film for film in DB['films'] if film['id'] == film_id), None)
+            if film:
+                total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
+                new_sale = {
+                    'id': str(random.random()).split('.')[1],
+                    'film_id': film_id,
+                    'user_id': user_logged['id']
+                }
+                DB['sales'].append(new_sale)
+                print('Ingresso comprado com sucesso!')
+            else:
+                print('Filme não encontrado!')
+        else:
+            print("Desculpe, não há filmes disponíveis para venda no momento.")
 
     elif menu_option['code'] == 'index_film':
         print('-' * 30)
