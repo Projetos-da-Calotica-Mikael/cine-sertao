@@ -329,10 +329,12 @@ while True:
             if (user_logged['type'] == 'admin'):
                 user = next((user for user in DB['users'] if user['id'] == sale['user_id']), None)
                 print(f"Venda ID: {sale['id']}")
+                print(f"Usuário ID: {sale['user_id']}")
                 if user:
                     print(f"Usuário: {user['name']}")
                 else:
                     print("Usuário não encontrado")
+                print(f"Filme ID: {sale['film_id']}")
             else:
                 if user_logged['id'] != sale['user_id']:
                     continue
