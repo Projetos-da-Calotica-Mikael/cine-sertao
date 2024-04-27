@@ -19,40 +19,46 @@ DB = {
 
 MAIN_MENU = [
     {
-        'title': 'Gerenciar os filmes (ADM)',
-        'key': '1',
+        'title': 'Gerenciar os filmes',
+        'code': 'manage_films',
         'roles': ['admin'],
-        'need_auth': False
+        'need_auth': True,
+        'need_no_auth': False
     },
     {
-        'title': 'Comprar Ingressos (CLIENTE)',
-        'key': '2',
+        'title': 'Comprar Ingressos',
+        'code': 'buy_tickets',
         'roles': ['client'],
-        'need_auth': False
+        'need_auth': True,
+        'need_no_auth': False
     },
     {
-        'title': 'Cadastrar usuário (ADM ou CLIENTE)',
-        'key': '3',
-        'roles': [],
-        'need_auth': False
+        'title': 'Cadastrar usuário',
+        'code': 'register_user',
+        'roles': ['admin', 'client'],
+        'need_auth': False,
+        'need_no_auth': False
     },
-      {
+    {
         'title': 'Login',
-        'key': '8',
+        'code': 'login',
         'roles': [],
-        'need_auth': False
+        'need_auth': False,
+        'need_no_auth': True
     },
     {
         'title': 'Deslogar',
-        'key': '9',
+        'code': 'logout',
         'roles': [],
-        'need_auth': True
+        'need_auth': True,
+        'need_no_auth': False
     },
     {
         'title': 'Sair',
-        'key': '0',
+        'code': 'exit',
         'roles': [],
-        'need_auth': False
+        'need_auth': False,
+        'need_no_auth': False
     }
 ]
 
@@ -61,44 +67,45 @@ user_logged = None
 while True:
     print('\033c')
 
+    print('=' * 10, f'BEM VINDO AO CINE SERTÃO', '=' * 10)
+
     if (user_logged):
-        print('=' * 10, f"BEM VINDO {user_logged['name']} AO CINE SERTÃO", '=' * 10)
-    else:
-        print('=' * 10, f'BEM VINDO AO CINE SERTÃO', '=' * 10)
+        print(f"\nOlá {user_logged['name']}!")
 
     print("\n* Menu Principal")
-    for option in MAIN_MENU:
-        if (option['need_auth'] == True and user_logged == None):
-            continue
-        print(f"[{option['key']}] - {option['title']}")
 
-    main_menu_key = input("\nEscolha uma opção: ")
-    main_menu_option = None
+    main_menu_valid_options = []
 
     for option in MAIN_MENU:
-        if (option['need_auth'] == True and user_logged == None):
-            continue
-        if option['key'] == main_menu_key:
-            main_menu_option = option
+        if user_logged == None:
+            if (option['need_auth'] == True or len(option['roles'])):
+                continue
+        else:
+            if option['need_no_auth'] == True:
+                continue
+            if (len(option['roles']) and user_logged['type'] not in option['roles']):
+                continue
 
-    if main_menu_option == None:
+        main_menu_valid_options.append(option)
+        print(f"{len(main_menu_valid_options)}. {option['title']}")
+
+    main_menu_index = input("\nEscolha uma opção: ")
+
+    if (not main_menu_index.isdigit()):
         print("Opção inválida.")
         input("\nPressione Enter para continuar...")
         continue
 
-    if ((main_menu_option['need_auth'] == True or len(main_menu_option['roles'])) and user_logged == None):
-        print('Para acessar essa funcionalidade, por favor o faça login!')
+    if (int(main_menu_index) < 1 or int(main_menu_index) > len(main_menu_valid_options)):
+        print("Opção inválida.")
         input("\nPressione Enter para continuar...")
         continue
 
-    if len(main_menu_option['roles']) and user_logged['type'] not in main_menu_option['roles']:
-        print("Usuário não autorizado.")
-        input("\nPressione Enter para continuar...")
-        continue
+    main_menu_option = main_menu_valid_options[int(main_menu_index) - 1]
 
     print('')
 
-    if main_menu_key == "1":
+    if main_menu_option['code'] == 'manage_films':
         print("Menu de Gerenciamento de Filmes")
         print("R5 - Realizar o cadastro do filme")
         print("R6 - Buscar filme")
@@ -107,12 +114,12 @@ while True:
         print("R9 - Tema Livre")
         print("R10 - Tema Livre")
 
-    elif main_menu_key == "2":
+    elif main_menu_option['code'] == 'buy_tickets':
         print("Menu de Compra de Ingressos")
         print("R11 - Efetuar a compra do ingresso de um filme")
         print("R12 - Tema livre")
 
-    elif main_menu_key == "3":
+    elif main_menu_option['code'] == 'register_user':
         name = input("Digite o nome: ")
 
         while True:
@@ -145,7 +152,7 @@ while True:
 
         print('Usuário cadastrado com sucesso!')
 
-    elif main_menu_key == "8":
+    elif main_menu_option['code'] == 'login':
         while True:
             while True:
                 email = input("Digite o email: ")
@@ -167,11 +174,11 @@ while True:
             else:
                 print('Usuário ou senha inválidos!')
 
-    elif main_menu_key == "9":
+    elif main_menu_option['code'] == 'logout':
         print(f"Até mais, {user_logged['name']}!")
         user_logged = None
 
-    elif main_menu_key == "0":
+    elif main_menu_option['code'] == 'exit':
         name = 'usuário anônimo' if user_logged == None else user_logged['name']
         print(f'Até mais, {name}!')
         exit()
