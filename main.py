@@ -392,7 +392,38 @@ while True:
         print('Usuário cadastrado com sucesso!')
 
     elif menu_option['code'] == 'update_user':
-        print("TODO: Editar usuário")
+        user_id = input("Digite o ID do usuário: ")
+
+        update_user = next((user for user in DB['users'] if user['id'] == user_id), None)
+
+        if update_user == None:
+            print('Usuário não encontrado!')
+            continue
+
+        update_user['name'] = input(f"Digite o nome ({update_user['name']}): ")
+
+        email_prompt = f"Digite o email ({update_user['email']}): "
+        while True:
+            update_user['email'] = input(email_prompt)
+
+            if '@' not in update_user['email'] or '.' not in update_user['email'].split('@')[-1]:
+                print('Email inválido!')
+            elif any(user['email'] == update_user['email'] and user['id'] != update_user['id'] for user in DB['users']):
+                print('Email já cadastrado!')
+            else:
+                break
+
+        update_user['password'] = input(f"Digite a senha ({update_user['password']}): ")
+
+        if user_logged['type'] == 'admin':
+            type_prompt = f"Digite o tipo (admin ou client) ({update_user['type']}): "
+            while True:
+                update_user['type'] = input(type_prompt)
+                if update_user['type'] in DB['user_types']:
+                    break
+                print('Tipo inválido!')
+
+        print('Usuário atualizado com sucesso!')
 
     elif menu_option['code'] == 'destroy_user':
         user_id = input("Digite o ID do usuário: ")
