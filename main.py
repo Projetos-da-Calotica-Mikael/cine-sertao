@@ -312,7 +312,60 @@ while True:
         print('Filme cadastrado com sucesso!')
 
     elif menu_option['code'] == 'update_film':
-        print("TODO: Editar filme")
+        film_id = input("Digite o ID do filme: ")
+
+        update_film = next((film for film in DB['films'] if film['id'] == film_id), None)
+
+        if update_film == None:
+            print('Filme não encontrado!')
+            input("\nPressione Enter para continuar...")
+            continue
+
+        update_film['title'] = input(f"Digite o título ({update_film['title']}): ")
+        update_film['description'] = input(f"Digite a descrição ({update_film['description']}): ")
+
+        duration_prompt = f"Digite a duração (em minutos) ({update_film['duration']}): "
+        while True:
+            update_film['duration'] = input(duration_prompt)
+            if update_film['duration'].isdigit():
+                update_film['duration'] = int(update_film['duration'])
+                break
+            print('Duração inválida!')
+
+        update_film['genre'] = input(f"Digite o gênero (separado por vírgula) ({', '.join(update_film['genre'])}): ").split(',')
+
+        room_prompt = f"Digite o número da sala ({update_film['room_number']}): "
+        while True:
+            update_film['room_number'] = input(room_prompt)
+            if update_film['room_number'].isdigit():
+                update_film['room_number'] = int(update_film['room_number'])
+                break
+            print('Número inválido!')
+
+        time_prompt = f"Digite o horário (manhã, tarde ou noite) ({update_film['time']}): "
+        while True:
+            update_film['time'] = input(time_prompt)
+            if update_film['time'] in ['manhã', 'tarde', 'noite']:
+                break
+            print('Horário inválido!')
+
+        capacity_prompt = f"Digite a capacidade da sala ({update_film['capacity']}): "
+        while True:
+            update_film['capacity'] = input(capacity_prompt)
+            if update_film['capacity'].isdigit():
+                update_film['capacity'] = int(update_film['capacity'])
+                break
+            print('Capacidade inválida!')
+
+        price_prompt = f"Digite o preço (R$ {update_film['price']:.2f}): "
+        while True:
+            update_film['price'] = input(price_prompt)
+            if update_film['price'].replace('.', '', 1).isdigit():
+                update_film['price'] = float(update_film['price'])
+                break
+            print('Preço inválido!')
+
+        print('Filme atualizado com sucesso!')
 
     elif menu_option['code'] == 'destroy_film':
         film_id = input("Digite o ID do filme: ")
@@ -398,6 +451,7 @@ while True:
 
         if update_user == None:
             print('Usuário não encontrado!')
+            input("\nPressione Enter para continuar...")
             continue
 
         update_user['name'] = input(f"Digite o nome ({update_user['name']}): ")
