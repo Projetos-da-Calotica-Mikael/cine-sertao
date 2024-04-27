@@ -37,7 +37,7 @@ DB = {
             'film_id': '1',
             'user_id': '1'
         },
-          {
+        {
             'id': '2',
             'film_id': '1',
             'user_id': '1'
@@ -199,7 +199,7 @@ FILM_MENU = {
 previous_menu = MAIN_MENU
 active_menu = MAIN_MENU
 
-user_logged = DB['users'][0]
+user_logged = None
 
 while True:
     print('\033c')
