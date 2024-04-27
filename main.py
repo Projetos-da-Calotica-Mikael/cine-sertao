@@ -36,6 +36,11 @@ DB = {
             'id': '1',
             'film_id': '1',
             'user_id': '1'
+        },
+          {
+            'id': '2',
+            'film_id': '1',
+            'user_id': '2'
         }
     ],
 }
@@ -56,16 +61,23 @@ MAIN_MENU = [
         'need_no_auth': False
     },
     {
-        'title': 'Comprar Ingressos',
+        'title': 'Comprar ingresso',
         'code': 'store_sale',
         'roles': ['client'],
         'need_auth': True,
         'need_no_auth': False
     },
     {
-        'title': 'Listar ingressos',
+        'title': 'Listar ingressos comprados',
         'code': 'index_sales',
-        'roles': ['client', 'admin'],
+        'roles': ['client'],
+        'need_auth': True,
+        'need_no_auth': False
+    },
+    {
+        'title': 'Listar ingressos vendidos',
+        'code': 'index_sales',
+        'roles': ['admin'],
         'need_auth': True,
         'need_no_auth': False
     },
@@ -192,21 +204,17 @@ while True:
             if (option['need_auth'] == True or len(option['roles'])):
                 continue
         else:
-            if option['need_no_auth'] == True:
+            if (option['need_no_auth'] == True or (len(option['roles']) and user_logged['type'] not in option['roles'])):
                 continue
-            if (len(option['roles']) and user_logged['type'] not in option['roles']):
-                continue
-
         main_menu_valid_options.append(option)
         print(f"{len(main_menu_valid_options)}. {option['title']}")
 
     main_menu_index = input("\nEscolha uma opção: ")
 
-    if (not main_menu_index.isdigit()):
-        input("Opção inválida.\n\nPressione Enter para continuar...")
-        continue
-
-    if (int(main_menu_index) < 1 or int(main_menu_index) > len(main_menu_valid_options)):
+    if (not main_menu_index.isdigit() or
+        int(main_menu_index) < 1 or
+        int(main_menu_index) > len(main_menu_valid_options)
+    ):
         input("Opção inválida.\n\nPressione Enter para continuar...")
         continue
 
@@ -218,7 +226,7 @@ while True:
         print("* Menu de Gerenciamento de Filmes")
         print(FILM_MENU)
 
-    if main_menu_option['code'] == 'users_menu':
+    elif main_menu_option['code'] == 'users_menu':
         print("* Menu de Gerenciamento de Usuários")
         print(USER_MENU)
 
@@ -226,7 +234,26 @@ while True:
         print("TODO: Listar filmes e permitir a compra de ingressos")
 
     elif main_menu_option['code'] == 'index_sales':
-        print("TODO: Listar vendas de ingressos, se admin mostra todos, se nao apenas do usuario logado")
+        print('-' * 20)
+        for sale in DB['sales']:
+            film = next((film for film in DB['films'] if film['id'] == sale['film_id']), None)
+            if (user_logged['type'] == 'admin'):
+                user = next((user for user in DB['users'] if user['id'] == sale['user_id']), None)
+                print(f"Venda: {sale['id']}")
+                print(f"Usuário: {user['name']}")
+            else:
+                if user_logged['id'] != sale['user_id']:
+                    continue
+            print(f"Filme: {film['title']}")
+            print(f"Descrição: {film['description']}")
+            print(f"Duração: {film['duration']} minutos")
+            print(f"Gênero: {', '.join(film['genre'])}")
+            print(f"Sala: {film['room_number']}")
+            print(f"Horário: {film['time']}")
+            total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
+            print(f"Assentos vendidos: {total_sales} de {film['capacity']}")
+            print(f"Preço: R$ {film['price']:.2f}")
+            print('-' * 20)
 
     elif main_menu_option['code'] == 'register_user':
         name = input("Digite o nome: ")
