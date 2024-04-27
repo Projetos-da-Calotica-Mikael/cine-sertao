@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: UTF-8 -*-
+
 import random
 
 DB = {
@@ -334,7 +337,12 @@ while True:
         print("TODO: Editar usuário")
 
     elif menu_option['code'] == 'destroy_user':
-        print("TODO: Apagar usuário")
+        user_id = input("Digite o ID do usuário: ")
+        if any(user['id'] == user_id for user in DB['users']):
+            DB['users'] = [user for user in DB['users'] if user['id'] != user_id]
+            print('Usuário apagado com sucesso!')
+        else:
+            print('ID inválido!')
 
     elif menu_option['code'] == 'login':
         while True:
