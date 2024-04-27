@@ -256,36 +256,32 @@ while True:
             print('-' * 20)
 
     elif main_menu_option['code'] == 'register_user':
-        name = input("Digite o nome: ")
+        new_user = {
+            'id': str(random.random()),
+            'type': 'client'
+        }
+        new_user['name'] = input("Digite o nome: ")
 
         while True:
-            email = input("Digite o email: ")
+            new_user['email'] = input("Digite o email: ")
 
-            if '@' not in email or '.' not in email.split('@')[-1]:
+            if '@' not in new_user['email'] or '.' not in new_user['email'].split('@')[-1]:
                 print('Email inválido!')
-            elif any(user['email'] == email for user in DB['users']):
+            elif any(user['email'] == new_user['email'] for user in DB['users']):
                 print('Email já cadastrado!')
             else:
                 break
 
-        password = input("Digite a senha: ")
-
-        user_type = 'client'
+        new_user['password'] = input("Digite a senha: ")
 
         if user_logged and user_logged['type'] == 'admin':
             while True:
-                user_type = input("Digite o tipo (admin ou client): ")
-                if user_type in DB['user_types']:
+                new_user['type'] = input("Digite o tipo (admin ou client): ")
+                if new_user['type'] in DB['user_types']:
                     break
                 print('Tipo inválido!')
 
-        DB['users'].append({
-            'id': str(random.random()),
-            'name': name,
-            'email': email,
-            'password': password,
-            'type': user_type
-        })
+        DB['users'].append(new_user)
 
         print('Usuário cadastrado com sucesso!')
 
