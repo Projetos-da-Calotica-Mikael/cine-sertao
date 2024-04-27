@@ -172,7 +172,7 @@ while True:
                 print(f'\nBem vindo, {name}!')
                 break
             else:
-                print('Usuário ou senha inválidos!')
+                print('Email ou senha inválidos!')
 
     elif main_menu_option['code'] == 'logout':
         print(f"Até mais, {user_logged['name']}!")
