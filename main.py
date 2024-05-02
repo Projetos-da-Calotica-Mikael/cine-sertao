@@ -217,10 +217,10 @@ while True:
 
     for option in active_menu['options']:
         if user_logged == None:
-            if (option['need_auth'] == True or len(option['roles'])):
+            if (option['need_auth'] or len(option['roles'])):
                 continue
         else:
-            if (option['need_no_auth'] == True or (len(option['roles']) and user_logged['type'] not in option['roles'])):
+            if (option['need_no_auth'] or (len(option['roles']) and user_logged['type'] not in option['roles'])):
                 continue
         valid_menu_options.append(option)
         print(f"{len(valid_menu_options)}. {option['title']}")
