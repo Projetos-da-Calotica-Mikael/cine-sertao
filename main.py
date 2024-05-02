@@ -268,7 +268,6 @@ while True:
             film_id = input("Digite o ID do filme que deseja comprar: ")
             film = next((film for film in DB['films'] if film['id'] == film_id), None)
             if film:
-                total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
                 new_sale = {
                     'id': str(random.random()).split('.')[1],
                     'film_id': film_id,
