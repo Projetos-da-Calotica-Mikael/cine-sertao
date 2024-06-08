@@ -3,9 +3,9 @@
 
 import random
 from getpass import getpass
-from utils import is_valid_email
+from utils import is_valid_email, clear
 from menus import MAIN_MENU, USER_MENU, FILM_MENU
-from films import print_film, most_sale_films
+from films import most_sale_films, print_film, filter_films_by_name
 
 DB = {
     'user_types': ['admin', 'client'],
@@ -69,7 +69,7 @@ active_menu = MAIN_MENU
 user_logged = DB['users'][0]
 
 while True:
-    print('\033c')
+    clear()
     print('=' * 15, 'BEM VINDO AO CINE SERTÃO', '=' * 15)
 
     if (user_logged):
@@ -145,16 +145,28 @@ while True:
             print("Desculpe, não há filmes disponíveis para venda no momento.")
 
     elif menu_option['code'] == 'index_film':
-        print('-' * 30)
-        films = DB['films']
-        for film in films:
-            print_film(DB, film)
+        name = ''
+        while True:
+            print('-' * 30)
+            films = filter_films_by_name(DB['films'], name)
+            for film in films:
+                print_film(DB, film)
+            name = input('\nDigite o nome do filme que deseja buscar (pressione Enter para sair): ')
+            if name == '':
+                break
+            clear()
 
     elif menu_option['code'] == 'index_popular_film':
-        print('-' * 30)
-        films = most_sale_films(DB)
-        for film in films:
-            print_film(DB, film)
+        name = ''
+        while True:
+            print('-' * 30)
+            films = filter_films_by_name(most_sale_films(DB), name)
+            for film in films:
+                print_film(DB, film)
+            name = input('\nDigite o nome do filme que deseja buscar (pressione Enter para sair): ')
+            if name == '':
+                break
+            clear()
 
     elif menu_option['code'] == 'store_film':
         new_film = {

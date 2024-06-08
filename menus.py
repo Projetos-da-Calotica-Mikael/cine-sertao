@@ -2,15 +2,15 @@ MAIN_MENU = {
     'title': 'Menu Principal',
     'options': [
         {
-            'title': 'Gerenciar usuários',
-            'code': 'users_menu',
+            'title': 'Gerenciar filmes',
+            'code': 'films_menu',
             'roles': ['admin'],
             'need_auth': True,
             'need_no_auth': False
         },
         {
-            'title': 'Gerenciar filmes',
-            'code': 'films_menu',
+            'title': 'Gerenciar usuários',
+            'code': 'users_menu',
             'roles': ['admin'],
             'need_auth': True,
             'need_no_auth': False
