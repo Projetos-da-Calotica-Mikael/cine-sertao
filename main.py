@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import random
+from getpass import getpass
 from utils import is_valid_email
 from menus import MAIN_MENU, USER_MENU, FILM_MENU
 from films import print_film, most_sale_films
@@ -322,7 +323,7 @@ while True:
             else:
                 break
 
-        new_user['password'] = input("Digite a senha: ")
+        new_user['password'] = getpass("Digite a senha: ")
 
         if user_logged and user_logged['type'] == 'admin':
             while True:
@@ -358,7 +359,7 @@ while True:
             else:
                 break
 
-        update_user['password'] = input(f"Digite a senha ({update_user['password']}): ")
+        update_user['password'] = getpass(f"Digite a senha ({update_user['password']}): ")
 
         if user_logged['type'] == 'admin':
             type_prompt = f"Digite o tipo (admin ou client) ({update_user['type']}): "
@@ -386,7 +387,7 @@ while True:
                     break
                 print('Email inválido!')
 
-            password = input("Digite a senha: ")
+            password = getpass("Digite a senha: ")
 
             for user in DB['users']:
                 if user['email'] == email and user['password'] == password:
