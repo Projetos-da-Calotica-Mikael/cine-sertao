@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import random
+from utils import is_valid_email
 from menus import MAIN_MENU, USER_MENU, FILM_MENU
 from films import print_film, most_sale_films
 
@@ -314,7 +315,7 @@ while True:
         while True:
             new_user['email'] = input("Digite o email: ")
 
-            if '@' not in new_user['email'] or '.' not in new_user['email'].split('@')[-1]:
+            if not is_valid_email(new_user['email']):
                 print('Email inválido!')
             elif any(user['email'] == new_user['email'] for user in DB['users']):
                 print('Email já cadastrado!')
@@ -350,7 +351,7 @@ while True:
         while True:
             update_user['email'] = input(email_prompt)
 
-            if '@' not in update_user['email'] or '.' not in update_user['email'].split('@')[-1]:
+            if not is_valid_email(update_user['email']):
                 print('Email inválido!')
             elif any(user['email'] == update_user['email'] and user['id'] != update_user['id'] for user in DB['users']):
                 print('Email já cadastrado!')
@@ -381,7 +382,7 @@ while True:
         while True:
             while True:
                 email = input("Digite o email: ")
-                if '@' in email and '.' in email.split('@')[-1]:
+                if is_valid_email(email):
                     break
                 print('Email inválido!')
 
