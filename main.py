@@ -2,6 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 import random
+from menus import MAIN_MENU, USER_MENU, FILM_MENU
+from films import print_film, most_sale_films
 
 DB = {
     'user_types': ['admin', 'client'],
@@ -22,6 +24,17 @@ DB = {
         }
     ],
     'films': [
+        {
+            'id': '2',
+            'title': 'Filme 2',
+            'description': 'Descrição do filme 2',
+            'duration': '120', # in minutes
+            'genre': ['Ação', 'Aventura'],
+            'room_number': '1',
+            'time': 'manhã', # 'manhã', 'tarde', 'noite'
+            'capacity': 100,
+            'price': 20.00,
+        },
         {
             'id': '1',
             'title': 'Filme 1',
@@ -48,161 +61,10 @@ DB = {
     ],
 }
 
-MAIN_MENU = {
-    'title': 'Menu Principal',
-    'options': [
-        {
-            'title': 'Gerenciar usuários',
-            'code': 'users_menu',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Gerenciar filmes',
-            'code': 'films_menu',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Comprar ingresso',
-            'code': 'store_sale',
-            'roles': ['client'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Listar ingressos comprados',
-            'code': 'index_sale',
-            'roles': ['client'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Listar ingressos vendidos',
-            'code': 'index_sale',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Login',
-            'code': 'login',
-            'roles': [],
-            'need_auth': False,
-            'need_no_auth': True
-        },
-        {
-            'title': 'Criar conta',
-            'code': 'store_user',
-            'roles': [],
-            'need_auth': False,
-            'need_no_auth': True
-        },
-        {
-            'title': 'Deslogar',
-            'code': 'logout',
-            'roles': [],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Sair',
-            'code': 'exit',
-            'roles': [],
-            'need_auth': False,
-            'need_no_auth': False
-        }
-    ]
-}
-
-USER_MENU = {
-    'title': 'Menu de Gerenciamento de Usuários',
-    'options': [
-        {
-            'title': 'Listar usuários',
-            'code': 'index_user',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Cadastrar usuário',
-            'code': 'store_user',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Editar usuário',
-            'code': 'update_user',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Apagar usuário',
-            'code': 'destroy_user',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Voltar',
-            'code': 'back',
-            'roles': [],
-            'need_auth': False,
-            'need_no_auth': False
-        }
-    ]
-}
-
-FILM_MENU = {
-    'title': 'Menu de Gerenciamento de Filmes',
-    'options': [
-        {
-            'title': 'Listar filmes',
-            'code': 'index_film',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Cadastrar filme',
-            'code': 'store_film',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Editar filme',
-            'code': 'update_film',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Apagar filme',
-            'code': 'destroy_film',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
-            'title': 'Voltar',
-            'code': 'back',
-            'roles': [],
-            'need_auth': False,
-            'need_no_auth': False
-        }
-    ]
-}
-
 previous_menu = MAIN_MENU
 active_menu = MAIN_MENU
 
-user_logged = None
+user_logged = DB['users'][0]
 
 while True:
     print('\033c')
@@ -282,18 +144,15 @@ while True:
 
     elif menu_option['code'] == 'index_film':
         print('-' * 30)
-        for film in DB['films']:
-            print(f"ID: {film['id']}")
-            print(f"Filme: {film['title']}")
-            print(f"Descrição: {film['description']}")
-            print(f"Duração: {film['duration']} minutos")
-            print(f"Gênero: {', '.join(film['genre'])}")
-            print(f"Sala: {film['room_number']}")
-            print(f"Horário: {film['time']}")
-            total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
-            print(f"Assentos vendidos: {total_sales} de {film['capacity']}")
-            print(f"Preço: R$ {film['price']:.2f}")
-            print('-' * 30)
+        films = DB['films']
+        for film in films:
+            print_film(DB, film)
+
+    elif menu_option['code'] == 'index_popular_film':
+        print('-' * 30)
+        films = most_sale_films(DB)
+        for film in films:
+            print_film(DB, film)
 
     elif menu_option['code'] == 'store_film':
         new_film = {
