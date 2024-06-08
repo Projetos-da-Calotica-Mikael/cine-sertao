@@ -16,6 +16,13 @@ MAIN_MENU = {
             'need_no_auth': False
         },
         {
+            'title': 'Listar filmes disponíveis',
+            'code': 'index_available_film',
+            'roles': ['client'],
+            'need_auth': True,
+            'need_no_auth': False
+        },
+        {
             'title': 'Comprar ingresso',
             'code': 'store_sale',
             'roles': ['client'],
@@ -118,7 +125,7 @@ FILM_MENU = {
             'need_auth': True,
             'need_no_auth': False
         },
-         {
+        {
             'title': 'Listar os filmes mais vistos',
             'code': 'index_popular_film',
             'roles': ['admin'],

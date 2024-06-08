@@ -6,6 +6,7 @@ def print_film(DB, film):
     print(f"Gênero: {', '.join(film['genre'])}")
     print(f"Sala: {film['room_number']}")
     print(f"Horário: {film['time']}")
+    print(f"Assentos disponíveis: {film['capacity']}")
     total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
     print(f"Assentos vendidos: {total_sales} de {film['capacity']}")
     print(f"Preço: R$ {film['price']:.2f}")
@@ -27,3 +28,12 @@ def most_sale_films(DB):
     sorted_films = sorted(DB['films'], key=lambda film: film_sales.get(film['id'], 0), reverse=True)
 
     return sorted_films
+
+def filter_films_available(DB):
+    available_films_list = []
+    for film in DB['films']:
+        total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
+        available_seats = film['capacity'] - total_sales
+        if available_seats > 0:
+            available_films_list.append(film)
+    return available_films_list

@@ -5,7 +5,7 @@ import random
 from getpass import getpass
 from utils import is_valid_email, clear
 from menus import MAIN_MENU, USER_MENU, FILM_MENU
-from films import most_sale_films, print_film, filter_films_by_name
+from films import most_sale_films, print_film, filter_films_by_name, filter_films_available
 
 DB = {
     'user_types': ['admin', 'client'],
@@ -66,7 +66,7 @@ DB = {
 previous_menu = MAIN_MENU
 active_menu = MAIN_MENU
 
-user_logged = DB['users'][0]
+user_logged = DB['users'][1]
 
 while True:
     clear()
@@ -112,24 +112,14 @@ while True:
 
     elif menu_option['code'] == 'store_sale':
         print('-' * 30)
-        filmes_disponiveis = False
-        for film in DB['films']:
-            total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
-            available_seats = film['capacity'] - total_sales
-            if available_seats > 0:
-                filmes_disponiveis = True
-                print(f"ID: {film['id']}")
-                print(f"Filme: {film['title']}")
-                print(f"Descrição: {film['description']}")
-                print(f"Duração: {film['duration']} minutos")
-                print(f"Gênero: {', '.join(film['genre'])}")
-                print(f"Sala: {film['room_number']}")
-                print(f"Horário: {film['time']}")
-                print(f"Assentos disponíveis: {available_seats} de {film['capacity']}")
-                print(f"Preço: R$ {film['price']:.2f}")
-                print('-' * 30)
-        if filmes_disponiveis:
-            film_id = input("Digite o ID do filme que deseja comprar: ")
+
+        available_films = filter_films_available(DB)
+
+        for film in available_films:
+            print_film(DB, film)
+
+        if len(available_films) > 0:
+            film_id = input("\nDigite o ID do filme que deseja comprar: ")
             film = next((film for film in DB['films'] if film['id'] == film_id), None)
             if film:
                 new_sale = {
@@ -143,6 +133,18 @@ while True:
                 print('Filme não encontrado!')
         else:
             print("Desculpe, não há filmes disponíveis para venda no momento.")
+
+    elif menu_option['code'] == 'index_available_film':
+        name = ''
+        while True:
+            print('-' * 30)
+            films = filter_films_by_name(filter_films_available(DB), name)
+            for film in films:
+                print_film(DB, film)
+            name = input('\nDigite o nome do filme que deseja buscar (pressione Enter para sair): ')
+            if name == '':
+                break
+            clear()
 
     elif menu_option['code'] == 'index_film':
         name = ''
