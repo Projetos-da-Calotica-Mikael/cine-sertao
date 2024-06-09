@@ -29,7 +29,7 @@ def generate_sale_print(DB, user_logged, sale):
         content += f"Preço: R$ {film['price']:.2f}\n"
     else:
         content += "Filme não encontrado\n"
-    content += '-' * 30 + '\n'
+    content += '-' * 30
     return content
 
 def find_sales_by_film_identifier(DB, identifier):
@@ -72,8 +72,11 @@ def print_sales(DB, user_logged):
 def generate_sales_file(DB, user_logged):
     filename = 'ingressos-vendidos.txt' if user_logged['type'] == 'admin' else 'ingressos-comprados.txt'
 
+    film_id = input('Digite o título ou ID do filme que deseja buscar (pressione Enter para todos): ')
+
     content = '-' * 30 + '\n'
-    for sale in DB['sales']:
+    sales = find_sales_by_film_identifier(DB, film_id) if film_id else DB['sales']
+    for sale in sales:
         content += generate_sale_print(DB, user_logged, sale)
 
     generate_file(filename, content)

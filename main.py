@@ -24,6 +24,13 @@ DB = {
             'email': 'client@client.com',
             'password': 'client',
             'type': 'client'
+        },
+        {
+            'id': '3',
+            'name': 'Cliente 2',
+            'email': 'client2@client.com',
+            'password': 'client',
+            'type': 'client'
         }
     ],
     'films': [
@@ -59,7 +66,7 @@ DB = {
         {
             'id': '2',
             'film_id': '2',
-            'user_id': '2'
+            'user_id': '3'
         }
     ],
 }
