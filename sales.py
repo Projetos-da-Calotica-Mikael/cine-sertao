@@ -1,5 +1,6 @@
-from utils import clear
+from utils import clear, generate_id
 from file import generate_file
+from films import filter_films_available, print_film
 
 def generate_sale_print(DB, user_logged, sale):
     content = ""
@@ -73,3 +74,27 @@ def generate_sales_file(DB, user_logged):
         content += generate_sale_print(DB, user_logged, sale)
 
     generate_file(filename, content)
+
+def store_sale(DB, user_logged):
+    print('-' * 30)
+
+    available_films = filter_films_available(DB)
+
+    for film in available_films:
+        print_film(DB, film)
+
+    if len(available_films) > 0:
+        film_id = input("\nDigite o ID do filme que deseja comprar: ")
+        film = next((film for film in DB['films'] if film['id'] == film_id), None)
+        if film:
+            new_sale = {
+                'id': generate_id(),
+                'film_id': film_id,
+                'user_id': user_logged['id']
+            }
+            DB['sales'].append(new_sale)
+            print('Ingresso comprado com sucesso!')
+        else:
+            print('Filme não encontrado!')
+    else:
+        print("Desculpe, não há filmes disponíveis para venda no momento.")
