@@ -6,6 +6,7 @@ from getpass import getpass
 from utils import is_valid_email, clear
 from menus import MAIN_MENU, USER_MENU, FILM_MENU
 from films import most_sale_films, print_film, filter_films_by_name, filter_films_available
+from sales import print_sales, generate_sales_file
 
 DB = {
     'user_types': ['admin', 'client'],
@@ -282,34 +283,10 @@ while True:
             print('Filme não encontrado!')
 
     elif menu_option['code'] == 'index_sale':
-        print('-' * 30)
-        for sale in DB['sales']:
-            film = next((film for film in DB['films'] if film['id'] == sale['film_id']), None)
-            if (user_logged['type'] == 'admin'):
-                user = next((user for user in DB['users'] if user['id'] == sale['user_id']), None)
-                print(f"Venda ID: {sale['id']}")
-                print(f"Usuário ID: {sale['user_id']}")
-                if user:
-                    print(f"Usuário: {user['name']}")
-                else:
-                    print("Usuário não encontrado")
-                print(f"Filme ID: {sale['film_id']}")
-            else:
-                if user_logged['id'] != sale['user_id']:
-                    continue
-            if film:
-                print(f"Filme: {film['title']}")
-                print(f"Descrição: {film['description']}")
-                print(f"Duração: {film['duration']} minutos")
-                print(f"Gênero: {', '.join(film['genre'])}")
-                print(f"Sala: {film['room_number']}")
-                print(f"Horário: {film['time']}")
-                total_sales = len([sale for sale in DB['sales'] if sale['film_id'] == film['id']])
-                print(f"Assentos vendidos: {total_sales} de {film['capacity']}")
-                print(f"Preço: R$ {film['price']:.2f}")
-            else:
-                print("Filme não encontrado")
-            print('-' * 30)
+        print_sales(DB, user_logged)
+
+    elif menu_option['code'] == 'generate_sale_file':
+        generate_sales_file(DB, user_logged)
 
     elif menu_option['code'] == 'index_user':
         print('-' * 30)

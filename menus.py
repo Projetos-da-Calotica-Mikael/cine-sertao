@@ -37,8 +37,22 @@ MAIN_MENU = {
             'need_no_auth': False
         },
         {
+            'title': 'Gerar arquivo dos ingressos comprados',
+            'code': 'generate_sale_file',
+            'roles': ['client'],
+            'need_auth': True,
+            'need_no_auth': False
+        },
+        {
             'title': 'Listar ingressos vendidos',
             'code': 'index_sale',
+            'roles': ['admin'],
+            'need_auth': True,
+            'need_no_auth': False
+        },
+          {
+            'title': 'Gerar arquivo dos ingressos vendidos',
+            'code': 'generate_sale_file',
             'roles': ['admin'],
             'need_auth': True,
             'need_no_auth': False
