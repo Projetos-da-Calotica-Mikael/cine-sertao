@@ -12,8 +12,11 @@ def print_film(DB, film):
     print(f"Preço: R$ {film['price']:.2f}")
     print('-' * 30)
 
-def filter_films_by_name(films, name):
-    return [film for film in films if name.lower() in film['title'].lower()]
+def filter_films_by_title(films, title):
+    films = [film for film in films if title.lower() in film['title'].lower()]
+    if len(films) == 0:
+        print("Nenhum filme encontrado com o título fornecido:", title)
+    return films
 
 def most_sale_films(DB):
     film_sales = {}

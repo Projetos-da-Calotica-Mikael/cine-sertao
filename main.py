@@ -5,7 +5,7 @@ import random
 from getpass import getpass
 from utils import is_valid_email, clear
 from menus import MAIN_MENU, USER_MENU, FILM_MENU
-from films import most_sale_films, print_film, filter_films_by_name, filter_films_available
+from films import most_sale_films, print_film, filter_films_by_title, filter_films_available
 from sales import print_sales, generate_sales_file
 
 DB = {
@@ -67,7 +67,7 @@ DB = {
 previous_menu = MAIN_MENU
 active_menu = MAIN_MENU
 
-user_logged = DB['users'][1]
+user_logged = DB['users'][0]
 
 while True:
     clear()
@@ -136,38 +136,38 @@ while True:
             print("Desculpe, não há filmes disponíveis para venda no momento.")
 
     elif menu_option['code'] == 'index_available_film':
-        name = ''
+        title = ''
         while True:
             print('-' * 30)
-            films = filter_films_by_name(filter_films_available(DB), name)
+            films = filter_films_by_title(filter_films_available(DB), title)
             for film in films:
                 print_film(DB, film)
-            name = input('\nDigite o nome do filme que deseja buscar (pressione Enter para sair): ')
-            if name == '':
+            title = input('\nDigite o título do filme que deseja buscar (pressione Enter para sair): ')
+            if title == '':
                 break
             clear()
 
     elif menu_option['code'] == 'index_film':
-        name = ''
+        title = ''
         while True:
             print('-' * 30)
-            films = filter_films_by_name(DB['films'], name)
+            films = filter_films_by_title(DB['films'], title)
             for film in films:
                 print_film(DB, film)
-            name = input('\nDigite o nome do filme que deseja buscar (pressione Enter para sair): ')
-            if name == '':
+            title = input('\nDigite o título do filme que deseja buscar (pressione Enter para sair): ')
+            if title == '':
                 break
             clear()
 
     elif menu_option['code'] == 'index_popular_film':
-        name = ''
+        title = ''
         while True:
             print('-' * 30)
-            films = filter_films_by_name(most_sale_films(DB), name)
+            films = filter_films_by_title(most_sale_films(DB), title)
             for film in films:
                 print_film(DB, film)
-            name = input('\nDigite o nome do filme que deseja buscar (pressione Enter para sair): ')
-            if name == '':
+            title = input('\nDigite o título do filme que deseja buscar (pressione Enter para sair): ')
+            if title == '':
                 break
             clear()
 

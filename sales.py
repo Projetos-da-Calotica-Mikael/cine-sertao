@@ -1,3 +1,4 @@
+from utils import clear
 from file import generate_file
 
 def generate_sale_print(DB, user_logged, sale):
@@ -30,10 +31,39 @@ def generate_sale_print(DB, user_logged, sale):
     content += '-' * 30 + '\n'
     return content
 
-def print_sales(DB, user_logged):
-    print('-' * 30)
+def find_sales_by_film_title(DB, film_title):
+    film_id = None
+
+    for film in DB['films']:
+        if film['title'] == film_title:
+            film_id = film['id']
+            break
+
+    if film_id is None:
+        print("Nenhum filme encontrado com o título fornecido:", film_title)
+        return []
+
+    sales_for_film = []
     for sale in DB['sales']:
-        print(generate_sale_print(DB, user_logged, sale))
+        if sale['film_id'] == film_id:
+            sales_for_film.append(sale)
+
+    if len(sales_for_film) == 0:
+        print("Nenhuma venda encontrada com o título fornecido:", film_title)
+
+    return sales_for_film
+
+def print_sales(DB, user_logged):
+    title = ''
+    while True:
+        print('-' * 30)
+        sales = find_sales_by_film_title(DB, title) if title else DB['sales']
+        for sale in sales:
+            print(generate_sale_print(DB, user_logged, sale))
+        title = input('\nDigite o título do filme que deseja buscar (pressione Enter para sair): ')
+        if title == '':
+            break
+        clear()
 
 def generate_sales_file(DB, user_logged):
     filename = 'ingressos-vendidos.txt' if user_logged['type'] == 'admin' else 'ingressos-comprados.txt'
