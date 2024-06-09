@@ -83,25 +83,25 @@ def generate_sales_file(DB, user_logged):
     generate_file(filename, content)
 
 def store_sale(DB, user_logged):
-    print('-' * 30)
-
     available_films = filter_films_available(DB)
 
-    for film in available_films:
-        print_film(DB, film)
+    if len(available_films) == 0:
+        print("Nenhum filme disponível para venda!")
+        return
 
-    if len(available_films) > 0:
-        film_id = input("\nDigite o ID do filme que deseja comprar: ")
-        film = next((film for film in DB['films'] if film['id'] == film_id), None)
-        if film:
-            new_sale = {
-                'id': generate_id(),
-                'film_id': film_id,
-                'user_id': user_logged['id']
-            }
-            DB['sales'].append(new_sale)
-            print('Ingresso comprado com sucesso!')
-        else:
-            print('Filme não encontrado!')
+    film_id = input("Digite o ID do filme que deseja comprar: ")
+    film = next((film for film in DB['films'] if film['id'] == film_id), None)
+    if film:
+        confirm = input(f"Confirma a compra do ingresso para o filme \"{film['title']}\" (S/N)? ")
+        if confirm.lower() != 's':
+            print('Compra cancelada!')
+            return
+        new_sale = {
+            'id': generate_id(),
+            'film_id': film_id,
+            'user_id': user_logged['id']
+        }
+        DB['sales'].append(new_sale)
+        print('Ingresso comprado com sucesso!')
     else:
-        print("Desculpe, não há filmes disponíveis para venda no momento.")
+        print('Filme não encontrado!')

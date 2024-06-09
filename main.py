@@ -36,7 +36,7 @@ DB = {
     'films': [
         {
             'id': '2',
-            'title': 'Filme 2',
+            'title': 'Filme B',
             'description': 'Descrição do filme 2',
             'duration': '120', # in minutes
             'genre': ['Ação', 'Aventura'],
@@ -47,7 +47,7 @@ DB = {
         },
         {
             'id': '1',
-            'title': 'Filme 1',
+            'title': 'Filme A',
             'description': 'Descrição do filme 1',
             'duration': '120', # in minutes
             'genre': ['Ação', 'Aventura'],
