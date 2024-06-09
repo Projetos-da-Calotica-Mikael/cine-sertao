@@ -44,20 +44,6 @@ MAIN_MENU = {
             'need_no_auth': False
         },
         {
-            'title': 'Listar ingressos vendidos',
-            'code': 'index_sale',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-          {
-            'title': 'Gerar arquivo dos ingressos vendidos',
-            'code': 'generate_sale_file',
-            'roles': ['admin'],
-            'need_auth': True,
-            'need_no_auth': False
-        },
-        {
             'title': 'Login',
             'code': 'login',
             'roles': [],
@@ -142,6 +128,20 @@ FILM_MENU = {
         {
             'title': 'Listar os filmes mais vistos',
             'code': 'index_popular_film',
+            'roles': ['admin'],
+            'need_auth': True,
+            'need_no_auth': False
+        },
+        {
+            'title': 'Listar ingressos vendidos',
+            'code': 'index_sale',
+            'roles': ['admin'],
+            'need_auth': True,
+            'need_no_auth': False
+        },
+        {
+            'title': 'Gerar arquivo dos ingressos vendidos',
+            'code': 'generate_sale_file',
             'roles': ['admin'],
             'need_auth': True,
             'need_no_auth': False
