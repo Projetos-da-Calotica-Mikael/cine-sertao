@@ -7,7 +7,7 @@ def generate_sale_print(DB, user_logged, sale):
     film = next((film for film in DB['films'] if film['id'] == sale['film_id']), None)
     if (user_logged['type'] == 'admin'):
         user = next((user for user in DB['users'] if user['id'] == sale['user_id']), None)
-        content = f"Venda ID: {sale['id']}\n"
+        content += f"Venda ID: {sale['id']}\n"
         content += f"Usuário ID: {sale['user_id']}\n"
         if user:
             content += f"Usuário: {user['name']}\n"
@@ -29,7 +29,7 @@ def generate_sale_print(DB, user_logged, sale):
         content += f"Preço: R$ {film['price']:.2f}\n"
     else:
         content += "Filme não encontrado\n"
-    content += '-' * 30
+    content += '-' * 30 + '\n'
     return content
 
 def find_sales_by_film_identifier(DB, identifier):
@@ -60,11 +60,12 @@ def find_sales_by_film_identifier(DB, identifier):
 def print_sales(DB, user_logged):
     title = ''
     while True:
-        print('-' * 30)
+        content = '-' * 30 + '\n'
         sales = find_sales_by_film_identifier(DB, title) if title else DB['sales']
         for sale in sales:
-            print(generate_sale_print(DB, user_logged, sale))
-        title = input('\nDigite o título ou id do filme que deseja buscar (pressione Enter para sair): ')
+            content += generate_sale_print(DB, user_logged, sale)
+        print(content)
+        title = input('Digite o título ou ID do filme que deseja buscar (pressione Enter para sair): ')
         if title == '':
             break
         clear()

@@ -74,7 +74,7 @@ DB = {
 previous_menu = menus.MAIN_MENU
 active_menu = menus.MAIN_MENU
 
-user_logged = DB['users'][0]
+user_logged = DB['users'][1]
 
 while True:
     clear()
