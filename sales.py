@@ -14,7 +14,7 @@ def generate_sale_print(DB, user_logged, sale):
         content += f"Filme ID: {sale['film_id']}\n"
     else:
         if user_logged['id'] != sale['user_id']:
-            return
+            return ''
     if film:
         content += f"Filme: {film['title']}\n"
         content += f"Descrição: {film['description']}\n"
